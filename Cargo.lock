@@ -315,7 +315,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "penrose-conf"
+name = "penrose_conf"
 version = "0.1.0"
 dependencies = [
  "penrose",
