@@ -7,6 +7,18 @@ use penrose::{
 };
 use std::collections::HashMap;
 
+pub const FONT: &str = "FiraCode Nerd Font";
+
+pub const HEIGHT: usize = 18;
+
+pub const BLACK: &str = "#282828";
+
+pub const WHITE: &str = "#ebdbb2";
+
+pub const GREY: &str = "#3c3836";
+
+pub const BLUE: &str = "#458588";
+
 pub fn set_keybindings() -> HashMap<
     KeyCode,
     Box<(dyn for<'r> FnMut(&'r mut WindowManager<XcbConnection>) -> Result<()> + 'static)>,
