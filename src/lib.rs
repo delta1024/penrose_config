@@ -1,16 +1,22 @@
 #[macro_use]
 extern crate penrose;
 
+#[macro_use]
+mod macros;
+
+
 use penrose::{
     core::helpers::index_selectors,
+    core::layout::{Layout, LayoutConf, monocle, floating, side_stack},
     Backward, Forward, Less, More, Result, WindowManager, XcbConnection,
     __example_helpers::KeyCode,
     draw::{Color, StatusBar, TextStyle},
     xcb::{new_xcb_backed_status_bar, XcbDraw, XcbDrawContext},
-    Config,
+    Config, contrib::hooks::{SpawnRule, ClientSpawnRules},
 };
 use std::collections::HashMap;
 use std::convert::TryFrom;
+
 
 pub const FONT: &str = "FiraCode Nerd Font";
 
@@ -23,6 +29,7 @@ pub const WHITE: &str = "#ebdbb2";
 pub const GREY: &str = "#3c3836";
 
 pub const GREEN: &str = "#20821d";
+
 pub fn gen_status_bar(
     config: &Config,
 ) -> penrose::draw::Result<StatusBar<XcbDrawContext, XcbDraw, XcbConnection>> {
@@ -40,7 +47,16 @@ pub fn gen_status_bar(
         config.workspaces().clone(),
     )
 }
+pub fn spawn_rule() -> Box<ClientSpawnRules> {
+    ClientSpawnRules::new(vec![
+	SpawnRule::ClassName("brave-bin", 8),
+	SpawnRule::ClassName("lf", 3),
+	SpawnRule::ClassName("emacs", 2),
+	SpawnRule::ClassName("Alacritty", 1),
 
+    ]
+    )
+}
 pub fn set_keybindings() -> HashMap<
     KeyCode,
     Box<(dyn for<'r> FnMut(&'r mut WindowManager<XcbConnection>) -> Result<()> + 'static)>,
@@ -70,11 +86,25 @@ pub fn set_keybindings() -> HashMap<
 }
 
 pub fn gen_config() -> Config {
+    let floating_classes = vec![
+	"Gimp",
+	"pavucontrol-qt",
+	"mpv",
+	"floating",
+	
+    ];
     Config::default()
         .builder()
-        .workspaces(vec!["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"])
+        .workspaces(vec!["Main", "Term", "IDE", "Files", "Pdf", "Games", "Video", "Background", "Web"])
+	.floating_classes(floating_classes)
 	.border_px(3)
 	.focused_border(0x20821d)
+	.layouts(vec![
+	    Layout::new("[side]", LayoutConf::default(), side_stack, 1, 0.6),
+	    Layout::new("[monicle]", LayoutConf::default(), monocle, 1, 0.6),
+	    Layout::new("[floating]", LayoutConf::default(), floating, 1, 0.6),
+
+	])
         .build()
         .unwrap()
 }

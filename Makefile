@@ -1,5 +1,3 @@
-# TODO: manpages?
-#       other binaries
 
 all: build
 
@@ -25,10 +23,12 @@ test_install:
 install:
 	@echo ":: Installing binaries..."
 	@install -Dm 755 target/release/penrose-wm /usr/bin/penrose-wm
+	@install -Dm 755 target/release/redblocks /usr/bin/redblocks
 	@echo ":: Done"
 
 .PHONY: uninstall
 uninstall:
 	@echo ":: Removing binaries..."
 	@rm -f /usr/bin/penrose-wm
+	@rm -f /usr/bin/redblocks
 	@echo ":: Done"

@@ -9,5 +9,10 @@ edition = "2018"
 name = "penrose-wm"
 path = "src/main.rs"
 
+[[bin]]
+name = "redblocks"
+path = "src/bin/redblocks/main.rs"
+
 [dependencies]
 penrose = "0.2.0"
+redblocks = "0.2.0"
